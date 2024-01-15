@@ -1,4 +1,4 @@
-package com.project.youtubestats;
+package com.project.youtubestats.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +10,7 @@ import java.util.*;
 
 @Controller
 public class MainController {
-    private final double exchangeRate = 2;
-
-    @RequestMapping("/{path:[^\\.]*}")
-    public String redirect() {
-        return "forward:/";
-    }
+    private double exchangeRate = 2;
 
     @GetMapping("/main")
     public String mainPage(Model model) {
