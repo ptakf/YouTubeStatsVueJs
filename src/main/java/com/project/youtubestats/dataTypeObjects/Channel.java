@@ -7,6 +7,7 @@ import java.io.IOException;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class Channel {
 
 
@@ -51,15 +52,19 @@ public class Channel {
     this.userComment = userComment;
   }
 
+  public Channel(String channelId) {
+    this.channelId = channelId;
+  }
 
-  public String getSubscriberCount() {
+
+/*  public String getSubscriberCount() {
     String subscriberCount = "";
       if(collectSubscriberCount){
-        SubscriberCountMetrics metrics = new SubscriberCountMetrics();
+        Observation metrics = new Observation();
         subscriberCount= metrics.getObservations();
       }
       return subscriberCount;
-  }
+  } */
 
   @Override
   public String toString() {
