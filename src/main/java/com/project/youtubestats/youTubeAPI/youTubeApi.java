@@ -1,13 +1,12 @@
 package com.project.youtubestats.youTubeAPI;
 
 
-import com.project.youtubestats.json.json;
+import com.project.youtubestats.json.Json;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 public final class youTubeApi {
 
@@ -83,7 +82,7 @@ public final class youTubeApi {
       "q=https%3A%2F%2Fwww.youtube.com%2F%40" + channelAlias + "&type=channel&key=" + apiKey;
   try {
     String jsonString = getJsonFromUrl(channelSearchURL);
-    channelId = json.parseChannelId(jsonString);
+    channelId = Json.parseChannelId(jsonString);
   } catch (Exception e){
     e.printStackTrace();
   }
@@ -100,7 +99,7 @@ public final class youTubeApi {
 
     try {
       String jsonString = getJsonFromUrl(channelSearchURL);
-      channelTitle = json.parseChannelTitle(jsonString);
+      channelTitle = Json.parseChannelTitle(jsonString);
     } catch (Exception e){
       e.printStackTrace();
     }
@@ -117,7 +116,7 @@ public final class youTubeApi {
 
     try {
       String jsonString = getJsonFromUrl(channelSearchURL);
-      channelViewCount = json.parseChannelViewCount(jsonString);
+      channelViewCount = Json.parseChannelViewCount(jsonString);
     } catch (Exception e){
       e.printStackTrace();
     }
@@ -134,7 +133,7 @@ public final class youTubeApi {
 
     try {
       String jsonString = getJsonFromUrl(channelSearchURL);
-      channelSubscriberCount = json.parseChannelSubscriberCount(jsonString);
+      channelSubscriberCount = Json.parseChannelSubscriberCount(jsonString);
     } catch (Exception e){
       e.printStackTrace();
     }
@@ -151,7 +150,7 @@ public final class youTubeApi {
 
     try {
       String jsonString = getJsonFromUrl(channelSearchURL);
-      channelVideoCount = json.parseChannelVideoCount(jsonString);
+      channelVideoCount = Json.parseChannelVideoCount(jsonString);
     } catch (Exception e){
       e.printStackTrace();
     }

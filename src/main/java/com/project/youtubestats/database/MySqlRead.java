@@ -3,14 +3,16 @@ package com.project.youtubestats.database;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.youtubestats.dataTypeObjects.Channel;
 import com.project.youtubestats.dataTypeObjects.Observation;
+import java.text.SimpleDateFormat;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
-import static com.project.youtubestats.json.json.*;
+public  class MySqlRead extends MySql {
 
-public class MySqlRead extends MySql {
+  private MySqlRead() {
+    super();
+  }
 
   public static int getLastAddedObservationId(observationType observationType){
     int result = 0;
@@ -48,9 +50,9 @@ public class MySqlRead extends MySql {
     return channels;
   }
 
-  public static Channel getChannelByLink(String givenChannelLink){
+  public static Channel getChannelById(String givenChannelId){
 
-    String sqlStatement = "SELECT * FROM channel where channel_link='"+givenChannelLink+"';";
+    String sqlStatement = "SELECT * FROM channel where id='"+givenChannelId+"';";
     try (Connection conn = DriverManager.getConnection(connectionUrl, "admin", "youtubestats");
 
          PreparedStatement ps = conn.prepareStatement(sqlStatement);
@@ -101,7 +103,20 @@ public class MySqlRead extends MySql {
          ResultSet rs = ps.executeQuery()) {
 
       while (rs.next()) {
-        String observationDate = rs.getString("obs_date");
+        String  observationDate = "";
+        Date date = rs.getDate("obs_date");
+        if (date != null) {
+          // Define the format you want for your String
+          SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+          // Convert the java.sql.Date to a String
+          observationDate = dateFormat.format(date);
+
+
+        } else {
+          observationDate = "";
+        }
+
         int observationValue = rs.getInt("obs_value");
         Observation observation = new Observation(observationDate,observationValue);
         observations.add(observation);
@@ -168,7 +183,7 @@ public class MySqlRead extends MySql {
 
     //ArrayList<Channel> channels = new ArrayList<>();
     //channels = getAllChannelsFollowed();
-    Channel channel = getChannelByLink("https://www.youtube.com/@kaiserbauch9092");
+    Channel channel = getChannelById("UC2e2EM3TEB8J6ctwTFSjYjA");
     System.out.println(getObservationsForChannel(channel,observationType.subscriber));
 
 

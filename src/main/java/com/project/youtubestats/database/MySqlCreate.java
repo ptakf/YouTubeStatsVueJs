@@ -3,7 +3,11 @@ import com.project.youtubestats.dataTypeObjects.Channel;
 
 import java.io.IOException;
 import java.sql.*;
-public final class MySqlCreate extends  MySql {
+public  final class MySqlCreate extends  MySql {
+
+  private MySqlCreate() {
+    super();
+  }
 
   public static void AddChannel(Channel channel){
     try(Connection conn = DriverManager.getConnection(connectionUrl, "admin", "youtubestats");

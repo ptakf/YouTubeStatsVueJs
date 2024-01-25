@@ -1,10 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+// Override default bootstrap colors
+$primary: #600000;
+$secondary: #6c757d;
+$success: #147714;
+$info: #7ff3f3;
+$warning: #f2ae47;
+$danger: #ff0000;
+$light: #f8f9fa;
+$dark: #212529;
+
 @import "bootstrap/scss/bootstrap";
 
-// TODO: Remove this. Temporary background color change, so my eyes don't burn out. <<
 body {
-    background-color: lightgrey;
+  background-color: #ececec;
+  background-image: url("assets/img/background-shapes.jpg");
 }
 
-// >>
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border: solid $danger 1px;
+}
 
+.text-gray {
+  color: #666;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}

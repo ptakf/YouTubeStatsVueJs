@@ -13,9 +13,9 @@ import com.project.youtubestats.database.MySqlRead;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public final class json {
+public final class Json {
 
-  private json() {
+  private Json() {
   }
 
   public static String parseChannelId(String jsonString){
@@ -111,6 +111,29 @@ public final class json {
   }
 
   public static String parseChannelVideoCount(String jsonString){
+    String channelVideoCount = "";
+
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      JsonNode jsonNode = objectMapper.readTree(jsonString);
+
+      // Extract channelId from the JSON
+      channelVideoCount = jsonNode
+        .path("items")
+        .path(0)
+        .path("statistics")
+        .path("videoCount")
+        .asText();
+
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return channelVideoCount;
+  }
+
+  public static String parseChannelInfo(String jsonString){
     String channelVideoCount = "";
 
     try {

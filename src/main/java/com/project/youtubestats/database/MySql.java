@@ -3,6 +3,9 @@ package com.project.youtubestats.database;
  public class MySql {
    protected static String  connectionUrl = "jdbc:mysql://youtubestats.c5aam8uoypor.eu-north-1.rds.amazonaws.com:3306/youtubestats?serverTimezone=CET";
 
+   protected MySql() {
+   }
+
    public static enum observationType{
      video("observation_video_count"),
      view("observation_view_count"),
