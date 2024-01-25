@@ -139,6 +139,7 @@ public final class json {
     ObjectMapper mapper = new ObjectMapper();
     ObjectNode rootNode = mapper.createObjectNode();
 
+    rootNode.put("channel_id", channel.getChannelId());
     rootNode.put("channel_link", channel.getChannelLink());
     rootNode.put("channel_user_alias", channel.getChannelUserAlias());
     rootNode.put("collect_once_in_n_days", channel.getCollectOnceInNDays());
@@ -200,6 +201,7 @@ public final class json {
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode rootNode = mapper.createObjectNode();
 
+      rootNode.put("channel_id", channel.getChannelId());
       rootNode.put("channel_link", channel.getChannelLink());
       rootNode.put("channel_user_alias", channel.getChannelUserAlias());
       if(channel.isCollectVideoCount()){

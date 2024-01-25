@@ -114,13 +114,62 @@ public class MySqlRead extends MySql {
     return observations;
   }
 
+  public static Date lastUpdateTime(Channel channel){
+    Date lastUpdTime = new Date(1,1,1);
+
+    String sqlStatement = "select obs_date from channel_observation_subscriber_count cosc inner join observation_subscriber_count osc on cosc.id_observation=osc.id where id_channel='" +
+      channel.getChannelId() +
+      "' UNION ALL select obs_date from channel_observation_video_count covc inner join observation_video_count ovc on covc.id_observation=ovc.id where id_channel='" +
+      channel.getChannelId() +
+      "' UNION ALL select obs_date from channel_observation_view_count covc inner join observation_view_count ovc on covc.id_observation=ovc.id where id_channel='" +
+      channel.getChannelId() +
+      "' order by obs_date desc limit 1;";
+
+    try (Connection conn = DriverManager.getConnection(connectionUrl, "admin", "youtubestats");
+
+         PreparedStatement ps = conn.prepareStatement(sqlStatement);
+         ResultSet rs = ps.executeQuery()) {
+
+      while (rs.next()) {
+       Date lastUpdate = rs.getDate("obs_date");
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return lastUpdTime;
+  }
+
+  public static boolean isTimeToUpdate(Channel channel){
+   boolean isTime = true;
+    String sqlStatement = "select DATE_ADD(ifnull('" +
+      lastUpdateTime(channel) +
+      "', '0001-01-01'), INTERVAL collect_once_in_n_days DAY)<=curdate() AND start_collect_from<=curdate() as logic_time from channel where id='" +
+      channel.getChannelId() +
+      "'; ";
+
+    try (Connection conn = DriverManager.getConnection(connectionUrl, "admin", "youtubestats");
+
+         PreparedStatement ps = conn.prepareStatement(sqlStatement);
+         ResultSet rs = ps.executeQuery()) {
+
+      while (rs.next()) {
+        isTime = rs.getBoolean("logic_time");
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return isTime;
+  }
 
   public static void main(String[] args) throws JsonProcessingException {
 
     //ArrayList<Channel> channels = new ArrayList<>();
     //channels = getAllChannelsFollowed();
     Channel channel = getChannelByLink("https://www.youtube.com/@kaiserbauch9092");
-    System.out.println(createChannelWithMetricsJson(channel));
+    System.out.println(getObservationsForChannel(channel,observationType.subscriber));
 
 
   }
