@@ -129,6 +129,28 @@ public  class MySqlRead extends MySql {
     return observations;
   }
 
+  public static ArrayList<String> getAllChannelLinks(){
+    ArrayList<String> channelLinks= new ArrayList<>();
+
+
+    String sqlStatement = "select channel_link from channel";
+    try (Connection conn = DriverManager.getConnection(connectionUrl, "admin", "youtubestats");
+
+         PreparedStatement ps = conn.prepareStatement(sqlStatement);
+         ResultSet rs = ps.executeQuery()) {
+
+      while (rs.next()) {
+        String channelLink = rs.getString("channel_link");
+        channelLinks.add(channelLink);
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return channelLinks;
+  }
+
   public static Date lastUpdateTime(Channel channel){
     Date lastUpdTime = new Date(1,1,1);
 
@@ -183,8 +205,9 @@ public  class MySqlRead extends MySql {
 
     //ArrayList<Channel> channels = new ArrayList<>();
     //channels = getAllChannelsFollowed();
-    Channel channel = getChannelById("UC2e2EM3TEB8J6ctwTFSjYjA");
-    System.out.println(getObservationsForChannel(channel,observationType.subscriber));
+    for(String s : getAllChannelLinks()){
+      System.out.println(s);
+    }
 
 
   }

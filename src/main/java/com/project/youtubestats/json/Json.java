@@ -9,6 +9,7 @@ import com.project.youtubestats.dataTypeObjects.Channel;
 import com.project.youtubestats.dataTypeObjects.Observation;
 import com.project.youtubestats.database.MySql;
 import com.project.youtubestats.database.MySqlRead;
+import com.project.youtubestats.youTubeAPI.youTubeApi;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -133,27 +134,35 @@ public final class Json {
     return channelVideoCount;
   }
 
-  public static String parseChannelInfo(String jsonString){
-    String channelVideoCount = "";
+  public static Channel parseChannelInfo(String jsonString){
 
     try {
       ObjectMapper objectMapper = new ObjectMapper();
       JsonNode jsonNode = objectMapper.readTree(jsonString);
 
-      // Extract channelId from the JSON
-      channelVideoCount = jsonNode
-        .path("items")
-        .path(0)
-        .path("statistics")
-        .path("videoCount")
-        .asText();
+      // Now you can access the parsed data using JsonNode.path
+      String channelLink = jsonNode.path("channel_link").asText();
+      String channelUserAlias = jsonNode.path("channel_user_alias").asText();
+      int collectOnceInNDays = jsonNode.path("collect_once_in_n_days").asInt();
+      boolean collectVideoCount = jsonNode.path("collect_video_count").asBoolean();
+      boolean collectViewCount = jsonNode.path("collect_view_count").asBoolean();
+      boolean collectSubscriberCount = jsonNode.path("collect_subscriber_count").asBoolean();
+      String startCollectFrom = jsonNode.path("start_collect_from").asText();
+      boolean onPause = jsonNode.path("on_pause").asBoolean();
+      String userComment = jsonNode.path("user_comment").asText();
 
+     String channelId = youTubeApi.getChannelId(channelLink);
+     String channelTitle = youTubeApi.getChannelTitle(channelId);
 
+     Channel channel = new Channel(channelId,channelLink,channelUserAlias,channelTitle,collectOnceInNDays,collectVideoCount
+     ,collectViewCount,collectSubscriberCount,startCollectFrom,onPause,userComment);
+
+     return channel;
     } catch (Exception e) {
       e.printStackTrace();
     }
 
-    return channelVideoCount;
+    return new Channel();
   }
 
   public static  String createChannelJson(Channel channel){
@@ -249,14 +258,21 @@ public final class Json {
 
 
   public static void main(String[] args) throws IOException {
-    Channel channel1 = new Channel("https://www.youtube.com/@kaiserbauch9092","BestChannel",3,true,
-      true,false,"2008-10-29",false,"allah akbar");
-    Channel channel2 = new Channel("https://www.youtube.com/@kaiserbauch9092","BestChannel",3,true,
-      true,false,"2008-10-29",false,"allah akbar");
-    ArrayList<Channel> channels = new ArrayList<>();
-    channels.add(channel1);
-    channels.add(channel2);
-    System.out.println(concatChannelsJsons(channels));
+    String js = "{\n" +
+      "\"channel_link\": \"https://www.youtube.com/@GoodTimesBadTimesPL\",\n" +
+      "\"channel_user_alias\": \"realdude!\",\n" +
+      "\"collect_once_in_n_days\": 7,\n" +
+      "\"collect_video_count\": true,\n" +
+      "\"collect_view_count\": true,\n" +
+      "\"collect_subscriber_count\": false,\n" +
+      "\"start_collect_from\": \"2025-01-01\",\n" +
+      "\"on_pause\": false,\n" +
+      "\"user_comment\": \"\"\n" +
+      "}";
+    Channel channel = parseChannelInfo(js);
+
+    System.out.println(channel.getChannelLink());
+    System.out.println(channel.getChannelId());
   }
 
 

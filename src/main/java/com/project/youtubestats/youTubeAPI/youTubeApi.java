@@ -77,16 +77,24 @@ public final class youTubeApi {
   public static String getChannelId(String linkToChannel) throws IOException {
 
     String channelId = "";
+    String channelSearchURL = "";
     String channelAlias = getChannelAlias(linkToChannel);
-    String channelSearchURL = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&" +
-      "q=https%3A%2F%2Fwww.youtube.com%2F%40" + channelAlias + "&type=channel&key=" + apiKey;
-  try {
-    String jsonString = getJsonFromUrl(channelSearchURL);
-    channelId = Json.parseChannelId(jsonString);
-  } catch (Exception e){
-    e.printStackTrace();
-  }
+    if(channelAlias.length()>1){
+      channelSearchURL = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&" +
+        "q=https%3A%2F%2Fwww.youtube.com%2F%40" + channelAlias + "&type=channel&key=" + apiKey;
 
+      try {
+        String jsonString = getJsonFromUrl(channelSearchURL);
+        channelId = Json.parseChannelId(jsonString);
+      } catch (Exception e){
+        e.printStackTrace();
+      }
+    } else {
+      int lastSlashIndex = linkToChannel.lastIndexOf('/');
+      if (lastSlashIndex != -1 && lastSlashIndex < linkToChannel.length() - 1) {
+        channelId = linkToChannel.substring(lastSlashIndex + 1);
+      }
+    }
     return channelId;
   }
 

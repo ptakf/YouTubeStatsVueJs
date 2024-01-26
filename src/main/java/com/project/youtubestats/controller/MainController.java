@@ -1,6 +1,11 @@
 package com.project.youtubestats.controller;
 
+import com.project.youtubestats.dataActualization.DataCollection;
+import com.project.youtubestats.dataTypeObjects.Channel;
+import com.project.youtubestats.database.MySQLDelete;
+import com.project.youtubestats.database.MySqlCreate;
 import com.project.youtubestats.database.MySqlRead;
+import com.project.youtubestats.database.MySqlUpdate;
 import com.project.youtubestats.json.Json;
 import org.springframework.stereotype.Controller;
 import org.springframework.boot.web.server.ErrorPage;
@@ -15,7 +20,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.util.*;
 
 
@@ -54,13 +65,34 @@ public class MainController {
   }
 
   //getting json with information about channel, returning nothing
+  // if contains channel's url is already at database, then updates record in db
   @PostMapping("/add_channel")
-  public void addChannel(@RequestBody String jsonChannel) {
+  public void addChannel(@RequestBody String jsonChannel) throws IOException {
     // Process the inputString as needed
-    String resultString = "Processed: " + jsonChannel;
+    Channel channel = Json.parseChannelInfo(jsonChannel);
+    String channelLink = channel.getChannelLink();
+    ArrayList<String> allLinks = MySqlRead.getAllChannelLinks();
+    if (!allLinks.contains(channelLink)) {
+      MySqlCreate.AddChannel(channel);
 
-    // Send the resultString as the response
-    //return resultString;
+      if (DataCollection.isEligibleForDataCollection(channel)) {
+        DataCollection.addObservationsForChannel(channel);
+      }
+    } else {
+      MySqlUpdate.updateChannel(channel);
+    }
+  }
+
+  @DeleteMapping("/delete_channel/{id}")
+  public void deleteChannel (@PathVariable String id){
+
+    try {
+      Channel channel = MySqlRead.getChannelById(id);
+      MySQLDelete.deleteChannel(channel);
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }
