@@ -256,26 +256,6 @@ public final class Json {
     return  jsonString;
   }
 
-
-  public static void main(String[] args) throws IOException {
-    String js = "{\n" +
-      "\"channel_link\": \"https://www.youtube.com/@GoodTimesBadTimesPL\",\n" +
-      "\"channel_user_alias\": \"realdude!\",\n" +
-      "\"collect_once_in_n_days\": 7,\n" +
-      "\"collect_video_count\": true,\n" +
-      "\"collect_view_count\": true,\n" +
-      "\"collect_subscriber_count\": false,\n" +
-      "\"start_collect_from\": \"2025-01-01\",\n" +
-      "\"on_pause\": false,\n" +
-      "\"user_comment\": \"\"\n" +
-      "}";
-    Channel channel = parseChannelInfo(js);
-
-    System.out.println(channel.getChannelLink());
-    System.out.println(channel.getChannelId());
-  }
-
-
 }
 
 

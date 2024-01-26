@@ -49,10 +49,6 @@ public class MySqlUpdate extends MySql {
     }
   }
 
-  public static void main(String[] args) throws IOException {
-    Channel channel = new Channel("https://www.youtube.com/@kaiserbauch9092","Change!",2,false,
-      true,false,"2008-10-29",false,"sheep");
-    updateChannel(channel);
-  }
+
 
 }

@@ -61,9 +61,4 @@ public  final class MySqlCreate extends  MySql {
     }
   }
 
-  public static void main(String[] args) throws IOException {
-    Channel channel = new Channel("https://www.youtube.com/@kaiserbauch9092","BestChannel",3,true,
-      true,false,"2008-10-29",false,"allah akbar");
-    AddObservation(channel,observationType.subscriber,46);
-  }
 }
