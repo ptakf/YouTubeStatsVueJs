@@ -201,14 +201,4 @@ public  class MySqlRead extends MySql {
     return isTime;
   }
 
-  public static void main(String[] args) throws JsonProcessingException {
-
-    //ArrayList<Channel> channels = new ArrayList<>();
-    //channels = getAllChannelsFollowed();
-    for(String s : getAllChannelLinks()){
-      System.out.println(s);
-    }
-
-
-  }
 }

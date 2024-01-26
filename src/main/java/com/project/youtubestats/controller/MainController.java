@@ -7,6 +7,7 @@ import com.project.youtubestats.database.MySqlCreate;
 import com.project.youtubestats.database.MySqlRead;
 import com.project.youtubestats.database.MySqlUpdate;
 import com.project.youtubestats.json.Json;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -33,6 +34,8 @@ import java.util.*;
 @RestController
 public class MainController {
 
+
+
  public void addViewControllers(ViewControllerRegistry registry) {
     registry.addViewController("/urlNotFound")
       .setViewName("forward:/index.html");
@@ -46,10 +49,10 @@ public class MainController {
     };
   }
 
-  /*  @RequestMapping("/{path:[^\\.]*}")
+    @RequestMapping("/{path:[^\\.]*}")
     public String redirect() {
         return "forward:/";
-    }  */
+    }
 
   // List of all channels
     @GetMapping("/channels_json")

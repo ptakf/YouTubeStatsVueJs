@@ -83,23 +83,5 @@ public class Channel {
       '}';
   }
 
-/*
-
-  "channel_title": "string",
-  "video_count": [ {
-    "date_in_string": 123,
-
-  }
-    ],
-  "view_count": [{
-    "date_in_string": 123,
-
-  }
-    ],
-  "subscriber_count": [{
-    "date_in_string": 123,
-
-  }
-*/
 
 }
