@@ -4,14 +4,16 @@
   <sub>
     <img src="src/favicon.ico" height="40" width="40">
   </sub>
-  YouTubeStats
+  YouTubeStatsVuejs
 </h1>
 
 ***
 
 YouTubeStats is a web app that calculates and displays statistics based on data retrieved from the YouTube Data API.
 
-Project developed by Maksym Malichenko, Filip Ptak and Maciej Jastrzębski.
+YouTubeStatsVuejs is a rewrite of YouTubeStats in Vuejs.
+
+Project developed by Filip Ptak.
 
 ***
 ## How to run
@@ -21,8 +23,8 @@ Project developed by Maksym Malichenko, Filip Ptak and Maciej Jastrzębski.
 
 #### How to compile
 ```
-git clone https://github.com/Malichenko-Maksym/YouTube-stats
-cd YouTube-stats
+git clone https://github.com/ptakf-uek/YouTube-Stats-Vuejs
+cd YouTube-Stats-Vuejs
 mvn package
 ```
 
