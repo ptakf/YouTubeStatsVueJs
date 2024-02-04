@@ -8,20 +8,20 @@ $danger: #ff0000;
 $light: #f8f9fa;
 $dark: #212529;
 
-@import "bootstrap/scss/bootstrap";
+@import 'bootstrap/scss/bootstrap';
 
 body {
   background-color: #ececec;
-  background-image: url("assets/img/background-shapes.jpg");
+  background-image: url('assets/img/background-shapes.jpg');
 }
 
-input.ng-invalid.ng-touched,
-select.ng-invalid.ng-touched {
-  border: solid $danger 1px;
-}
+// input.ng-invalid.ng-touched,
+// select.ng-invalid.ng-touched {
+//   border: solid $danger 1px;
+// }
 
 .text-gray {
-  color: #666;
+  color: #666666;
 }
 
 html,

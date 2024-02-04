@@ -11,7 +11,7 @@
 
 YouTubeStats is a web app that calculates and displays statistics based on data retrieved from the YouTube Data API.
 
-YouTubeStatsVuejs is a rewrite of YouTubeStats in Vuejs.
+YouTubeStatsVuejs is a rewrite of YouTubeStats in Vue.js.
 
 Project developed by Filip Ptak.
 
