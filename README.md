@@ -2,7 +2,7 @@
 
 <h1 align="center"> 
   <sub>
-    <img src="src/favicon.ico" height="40" width="40">
+    <img src="public/favicon.ico" height="40" width="40">
   </sub>
   YouTubeStatsVuejs
 </h1>
