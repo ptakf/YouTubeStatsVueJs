@@ -1,51 +1,34 @@
 import { defineStore } from 'pinia'
 import { Channel } from '@/models/channel'
+import { ServerApi } from '@/composables/serverApi'
+
+const serverApi = new ServerApi()
 
 export const useChannelStore = defineStore('channelStore', {
   state: () => ({
-    // channelList: [] as Channel[],
-    // TODO: Remove this: <---
-    channelList: [
-      new Channel(
-        '12342342',
-        'wowzer',
-        'noway',
-        'dudeguy',
-        true,
-        true,
-        false,
-        1,
-        '13-03-2023',
-        true,
-        'REAL MAN'
-      ),
-      new Channel(
-        'false',
-        'false',
-        'false',
-        'false',
-        false,
-        false,
-        false,
-        2,
-        '22-11-2022',
-        false,
-        'false channel'
-      )
-    ]
-    // --->
+    channelList: [] as Channel[]
   }),
   actions: {
-    addChannel(channel: Channel): void {
-      this.channelList.push(channel)
-    },
-    getChannelList(): Channel[] {
-      return this.channelList
-    },
-    removeChannel(removedChannel: Channel): void {
-      this.channelList = this.channelList.filter((channel: Channel) => {
-        return channel.getId() !== removedChannel.getId()
-      })
+    async getChannelList(): Promise<Channel[]> {
+      try {
+        const response = await serverApi.getChannelList()
+        this.channelList = response.data.map((channel: any) => {
+          const newChannel = new Channel()
+          newChannel.setId(channel['channel_id'])
+          newChannel.setChannelLink(channel['channel_link'])
+          newChannel.setChannelTitle(channel['channel_title'])
+          newChannel.setChannelUserAlias(channel['channel_user_alias'])
+          newChannel.setCollectVideoCount(channel['collect_video_count'])
+          newChannel.setCollectViewCount(channel['collect_view_count'])
+          newChannel.setCollectSubscriberCount(channel['collect_subscriber_count'])
+
+          return newChannel
+        })
+        return this.channelList
+      } catch (error) {
+        console.error('Error fetching channel list:', error)
+        return []
+      }
     }
   }
 })

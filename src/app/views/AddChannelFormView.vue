@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useChannelStore } from '@/stores/channelStore'
 import { Channel } from '@/models/channel'
 import router from '@/router'

@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { Channel } from '../models/channel'
 import ChannelListElement from '@/components/ChannelListElement.vue'
 import { useChannelStore } from '@/stores/channelStore'
 
-const channelStore = useChannelStore()
-var channelList: Channel[] = []
+var channelStore = useChannelStore()
+var channelList = ref<Channel[]>([])
 
 onBeforeMount(() => {
   loadChannelList()
 })
 
 function onRemovedChannel(channel: any) {
-  channelStore.removeChannel(channel)
+  // channelStore.removeChannel(channel)
 
   loadChannelList()
 }
 
 function loadChannelList() {
-  channelList = channelStore.getChannelList()
+  channelStore.getChannelList().then((response) => {
+    channelList.value = response
+  })
 }
 </script>
 
