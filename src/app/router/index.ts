@@ -23,12 +23,14 @@ const router = createRouter({
     {
       path: '/channel/:id',
       name: 'channel',
-      component: () => import('../views/ChannelView.vue')
+      component: () => import('../views/ChannelView.vue'),
+      props: true
     },
     {
       path: '/channel/:id/edit',
       name: 'editChannelForm',
-      component: () => import('../views/EditChannelFormView.vue')
+      component: () => import('../views/EditChannelFormView.vue'),
+      props: true
     },
     {
       path: '/about',

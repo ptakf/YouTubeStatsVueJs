@@ -43,6 +43,10 @@ export class ServerApi {
         newChannel.setCollectVideoCount(channel['collect_video_count'])
         newChannel.setCollectViewCount(channel['collect_view_count'])
         newChannel.setCollectSubscriberCount(channel['collect_subscriber_count'])
+        newChannel.setCollectOnceInNDays(channel['collect_once_in_n_days'])
+        newChannel.setStartCollectingFrom(channel['start_collect_from'])
+        newChannel.setOnPause(channel['on_pause'])
+        newChannel.setUserComment(channel['user_comment'])
 
         return newChannel
       })

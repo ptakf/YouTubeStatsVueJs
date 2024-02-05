@@ -2,11 +2,16 @@
 import { useChannelStore } from '@/stores/channelStore'
 import { Channel } from '@/models/channel'
 import router from '@/router'
+import { ref } from 'vue'
+import { formatDate } from '@/composables/utils'
 
 const channelStore = useChannelStore()
 var channel = new Channel()
 
-const onSubmit = async () => {
+const currentDate = ref<string>(formatDate(new Date()))
+const maxDate = ref<string>(formatDate(new Date(new Date().getFullYear(), 240)))
+
+async function onSubmit() {
   if (confirm('Are you sure you want to add this channel?')) {
     if (
       channelStore.channelList.filter((existingChannel: Channel) => {
@@ -87,9 +92,9 @@ const onSubmit = async () => {
             id="startCollectingFrom"
             type="date"
             class="form-control"
-            value="{{ currentDate | date: 'yyyy-MM-dd' }}"
-            min="{{ currentDate | date: 'yyyy-MM-dd' }}"
-            max="{{ maxDate | date: 'yyyy-MM-dd' }}"
+            :value="currentDate"
+            :min="currentDate"
+            :max="maxDate"
             pattern="^(19|20)\d{2}-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01])$"
             required
           />
