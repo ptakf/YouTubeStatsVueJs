@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { Channel } from '@/models/channel'
 import { ServerApi } from '@/composables/serverApi'
+import { Statistics } from '@/models/statistics'
 
 const serverApi = new ServerApi()
 
@@ -35,6 +36,14 @@ export const useChannelStore = defineStore('channelStore', {
       } catch (error) {
         console.error('Error removing channel:', error)
         return new Channel()
+      }
+    },
+    async getStatistics(channel: Channel): Promise<Statistics> {
+      try {
+        return await serverApi.getStatistics(channel)
+      } catch (error) {
+        console.error('Error fetching channel statistics:', error)
+        return new Statistics()
       }
     }
   }

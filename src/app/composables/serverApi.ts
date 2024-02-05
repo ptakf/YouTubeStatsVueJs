@@ -1,4 +1,5 @@
 import { Channel } from '@/models/channel'
+import { Statistics } from '@/models/statistics'
 import axios from 'axios'
 
 export class ServerApi {
@@ -32,7 +33,8 @@ export class ServerApi {
   async getChannelList(): Promise<any> {
     try {
       const response = await axios.get('/channels_json', this.httpOptions)
-      const channelList = response.data.map((channel: any) => {
+
+      return response.data.map((channel: any) => {
         const newChannel = new Channel()
         newChannel.setId(channel['channel_id'])
         newChannel.setChannelLink(channel['channel_link'])
@@ -44,15 +46,51 @@ export class ServerApi {
 
         return newChannel
       })
-
-      return channelList
     } catch (error) {
       console.error('Error fetching channel list:', error)
     }
   }
 
   async removeChannel(channel: Channel): Promise<any> {
-    await axios.delete(`/delete_channel/${channel.getId()}`, this.httpOptions)
-    return channel
+    try {
+      await axios.delete(`/delete_channel/${channel.getId()}`, this.httpOptions)
+      return channel
+    } catch (error) {
+      console.error('Error removing channel:', error)
+    }
+  }
+
+  async getStatistics(channel: Channel): Promise<any> {
+    try {
+      await axios.get(`/channel_details_json/${channel.getId()}`).then((response: any) => {
+        const statistics = new Statistics()
+
+        try {
+          for (const videoCount of JSON.parse(response.video_count)) {
+            Object.assign(statistics.videoCountDictionary, videoCount)
+          }
+        } catch (error) {
+          console.error('Error loading video count:', error)
+        }
+        try {
+          for (const viewCount of JSON.parse(response.view_count)) {
+            Object.assign(statistics.viewCountDictionary, viewCount)
+          }
+        } catch (error) {
+          console.error('Error loading view count:', error)
+        }
+        try {
+          for (const subscriberCount of JSON.parse(response.subscriber_count)) {
+            Object.assign(statistics.subscriberCountDictionary, subscriberCount)
+          }
+        } catch (error) {
+          console.error('Error loading subscriber count:', error)
+        }
+
+        return statistics
+      })
+    } catch (error) {
+      console.error('Error fetching channel statistics:', error)
+    }
   }
 }
