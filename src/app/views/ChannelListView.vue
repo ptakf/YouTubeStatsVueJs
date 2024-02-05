@@ -12,9 +12,9 @@ onBeforeMount(() => {
 })
 
 function onRemovedChannel(channel: any) {
-  // channelStore.removeChannel(channel)
-
-  loadChannelList()
+  channelStore.removeChannel(channel).then(() => {
+    loadChannelList()
+  })
 }
 
 function loadChannelList() {

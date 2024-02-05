@@ -17,9 +17,9 @@ const onSubmit = async () => {
         channel.getChannelLink().split('/')[channel.getChannelLink().split('/').length - 1]
       )
 
-      channelStore.addChannel(channel)
-
-      router.push('/channel/list')
+      channelStore.addChannel(channel).then(() => {
+        router.push('/channel/list')
+      })
     }
   }
 }
