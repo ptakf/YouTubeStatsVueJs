@@ -69,26 +69,32 @@ export class ServerApi {
       await axios.get(`/channel_details_json/${channel.getId()}`).then((response: any) => {
         const statistics = new Statistics()
 
-        try {
-          for (const videoCount of JSON.parse(response.video_count)) {
-            Object.assign(statistics.videoCountDictionary, videoCount)
+        if (response.video_count != undefined) {
+          try {
+            for (const videoCount of JSON.parse(response.data.video_count)) {
+              Object.assign(statistics.videoCountDictionary, videoCount)
+            }
+          } catch (error) {
+            console.error('Error loading video count:', error)
           }
-        } catch (error) {
-          console.error('Error loading video count:', error)
         }
-        try {
-          for (const viewCount of JSON.parse(response.view_count)) {
-            Object.assign(statistics.viewCountDictionary, viewCount)
+        if (response.view_count != undefined) {
+          try {
+            for (const viewCount of JSON.parse(response.data.view_count)) {
+              Object.assign(statistics.viewCountDictionary, viewCount)
+            }
+          } catch (error) {
+            console.error('Error loading view count:', error)
           }
-        } catch (error) {
-          console.error('Error loading view count:', error)
         }
-        try {
-          for (const subscriberCount of JSON.parse(response.subscriber_count)) {
-            Object.assign(statistics.subscriberCountDictionary, subscriberCount)
+        if (response.subscriber_count != undefined) {
+          try {
+            for (const subscriberCount of JSON.parse(response.data.subscriber_count)) {
+              Object.assign(statistics.subscriberCountDictionary, subscriberCount)
+            }
+          } catch (error) {
+            console.error('Error loading subscriber count:', error)
           }
-        } catch (error) {
-          console.error('Error loading subscriber count:', error)
         }
 
         return statistics

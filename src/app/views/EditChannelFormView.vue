@@ -7,14 +7,14 @@ import { formatDate } from '@/composables/utils'
 
 const channelStore = useChannelStore()
 const props = defineProps({ id: { type: String, required: true } })
-var channel = new Channel()
+const channel = new Channel()
 
 var selectedDate = ''
 const currentDate = ref<string>(formatDate(new Date()))
 const maxDate = ref<string>(formatDate(new Date(new Date().getFullYear(), 240)))
 
 onBeforeMount(() => {
-  channel = channelStore.getChannel(props.id)
+  Object.assign(channel, channelStore.getChannel(props.id))
   selectedDate = channel.getStartCollectingFrom()
 })
 
