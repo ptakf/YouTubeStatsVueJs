@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 const props = defineProps(['channel'])
+const channel = props.channel
+
 const emit = defineEmits(['removedChannelEvent'])
 
 function onRemovedChannel(channel: any) {
@@ -7,14 +11,16 @@ function onRemovedChannel(channel: any) {
     emit('removedChannelEvent', channel)
   }
 }
+
+const channelPauseStatusStyle = computed(() => {
+  return channel.getOnPause() ? { 'background-color': '#b7b7b7', 'border-color': '#a2a2a2' } : {}
+})
 </script>
 
 <template>
   <li
     class="list-group-item d-flex justify-content-between align-items-center mb-2"
-    :style="
-      channel.getOnPause() ? { 'background-color': '#b7b7b7', 'border-color': '#a2a2a2' } : {}
-    "
+    :style="channelPauseStatusStyle"
   >
     <div>
       <RouterLink :to="'/channel/' + channel.getId()" class="text-decoration-none"

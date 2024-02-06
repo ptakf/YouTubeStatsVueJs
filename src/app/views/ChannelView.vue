@@ -3,25 +3,22 @@ import { Channel } from '@/models/channel'
 import { Statistics } from '@/models/statistics'
 import router from '@/router'
 import { useChannelStore } from '@/stores/channelStore'
-import { onBeforeMount } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import ChartComponent from '@/components/ChartComponent.vue'
 
 const channelStore = useChannelStore()
 const props = defineProps({ id: { type: String, required: true } })
 const channel = new Channel()
 const statistics = new Statistics()
-var displayedChart: string = 'videoCount'
-var areStatisticsLoaded: boolean = false
+var displayedChart = ref('videoCount')
+var areStatisticsLoaded = ref(false)
 
 onBeforeMount(() => {
   Object.assign(channel, channelStore.getChannel(props.id))
-  Object.assign(
-    statistics,
-    channelStore.getStatistics(channel).then((response) => {
-      areStatisticsLoaded = true
-      return response
-    })
-  )
+  channelStore.getStatistics(channel).then((response) => {
+    Object.assign(statistics, response)
+    areStatisticsLoaded.value = true
+  })
 })
 
 function onRemovedChannel(channel: any) {
@@ -33,7 +30,7 @@ function onRemovedChannel(channel: any) {
 }
 
 function changeDisplayedChart(chart: string): void {
-  displayedChart = chart
+  displayedChart.value = chart
 }
 </script>
 
@@ -74,82 +71,73 @@ function changeDisplayedChart(chart: string): void {
       <span>
         resumed. Tracking:
         <div class="d-block mt-3 btn-group" role="group">
-          <input
-            v-if="channel.getCollectVideoCount()"
-            type="radio"
-            class="btn-check"
-            name="btnradio"
-            id="buttonVideoCount"
-            @click="changeDisplayedChart('videoCount')"
-            checked
-          />
-          <label
-            v-if="channel.getCollectVideoCount()"
-            for="buttonVideoCount"
-            class="btn btn-outline-primary"
-            >Uploaded Video Count</label
-          >
+          <template v-if="channel.getCollectVideoCount()">
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="buttonVideoCount"
+              @click="changeDisplayedChart('videoCount')"
+              checked
+            />
+            <label for="buttonVideoCount" class="btn btn-outline-primary"
+              >Uploaded Video Count</label
+            >
+          </template>
 
-          <input
-            v-if="channel.getCollectViewCount()"
-            type="radio"
-            class="btn-check"
-            name="btnradio"
-            id="buttonViewCount"
-            @click="changeDisplayedChart('viewCount')"
-          />
-          <label
-            v-if="channel.getCollectViewCount()"
-            for="buttonViewCount"
-            class="btn btn-outline-primary"
-            >Channel's Views</label
-          >
+          <template v-if="channel.getCollectViewCount()">
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="buttonViewCount"
+              @click="changeDisplayedChart('viewCount')"
+            />
+            <label for="buttonViewCount" class="btn btn-outline-primary">Channel's Views</label>
+          </template>
 
-          <input
-            v-if="channel.getCollectSubscriberCount()"
-            type="radio"
-            class="btn-check"
-            name="btnradio"
-            id="buttonSubscriberCount"
-            @click="changeDisplayedChart('subscriberCount')"
-          />
-          <label
-            v-if="channel.getCollectSubscriberCount()"
-            for="buttonSubscriberCount"
-            class="btn btn-outline-primary"
-            >Subscriber Count</label
-          >
+          <template v-if="channel.getCollectSubscriberCount()">
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="buttonSubscriberCount"
+              @click="changeDisplayedChart('subscriberCount')"
+            />
+            <label for="buttonSubscriberCount" class="btn btn-outline-primary"
+              >Subscriber Count</label
+            >
+          </template>
         </div>
       </span>
     </template>
   </h4>
 
-  <template v-if="areStatisticsLoaded">
-    <div v-if="!channel.getOnPause()" class="d-flex justify-content-center align-items-center mt-5">
-      <template v-if="displayedChart === 'videoCount'">
-        <ChartComponent
-          :statistics="statistics.getVideoCountDictionary()"
-          class="flex-grow-1"
-        ></ChartComponent>
+  <template v-if="!channel.getOnPause()">
+    <div class="d-flex justify-content-center align-items-center mt-5">
+      <template v-if="areStatisticsLoaded">
+        <template v-if="displayedChart === 'videoCount'">
+          <ChartComponent
+            :chartStatistics="statistics.getVideoCountDictionary()"
+            class="flex-grow-1"
+          ></ChartComponent>
+        </template>
+        <template v-else-if="displayedChart === 'viewCount'">
+          <ChartComponent
+            :chartStatistics="statistics.getViewCountDictionary()"
+            class="flex-grow-1"
+          ></ChartComponent>
+        </template>
+        <template v-else-if="displayedChart === 'subscriberCount'">
+          <ChartComponent
+            :chartStatistics="statistics.getSubscriberCountDictionary()"
+            class="flex-grow-1"
+          ></ChartComponent>
+        </template>
       </template>
-      <template v-else-if="displayedChart === 'viewCount'">
-        <ChartComponent
-          :statistics="statistics.getViewCountDictionary()"
-          class="flex-grow-1"
-        ></ChartComponent>
+      <template v-else>
+        <ChartComponent :chartStatistics="{}" class="flex-grow-1"></ChartComponent>
       </template>
-      <template v-else-if="displayedChart === 'subscriberCount'">
-        <ChartComponent
-          :statistics="statistics.getSubscriberCountDictionary()"
-          class="flex-grow-1"
-        ></ChartComponent
-      ></template>
-    </div>
-  </template>
-  <template v-else>
-    <div>
-      <div class="d-flex justify-content-center align-items-center mt-5"></div>
-      <ChartComponent class="flex-grow-1"></ChartComponent>
     </div>
   </template>
 </template>

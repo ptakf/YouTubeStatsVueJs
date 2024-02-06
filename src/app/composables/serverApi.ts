@@ -66,10 +66,10 @@ export class ServerApi {
 
   async getStatistics(channel: Channel): Promise<any> {
     try {
-      await axios.get(`/channel_details_json/${channel.getId()}`).then((response: any) => {
+      return await axios.get(`/channel_details_json/${channel.getId()}`).then((response: any) => {
         const statistics = new Statistics()
 
-        if (response.video_count != undefined) {
+        if (response.data.video_count != undefined) {
           try {
             for (const videoCount of JSON.parse(response.data.video_count)) {
               Object.assign(statistics.videoCountDictionary, videoCount)
@@ -78,7 +78,7 @@ export class ServerApi {
             console.error('Error loading video count:', error)
           }
         }
-        if (response.view_count != undefined) {
+        if (response.data.view_count != undefined) {
           try {
             for (const viewCount of JSON.parse(response.data.view_count)) {
               Object.assign(statistics.viewCountDictionary, viewCount)
@@ -87,7 +87,7 @@ export class ServerApi {
             console.error('Error loading view count:', error)
           }
         }
-        if (response.subscriber_count != undefined) {
+        if (response.data.subscriber_count != undefined) {
           try {
             for (const subscriberCount of JSON.parse(response.data.subscriber_count)) {
               Object.assign(statistics.subscriberCountDictionary, subscriberCount)
