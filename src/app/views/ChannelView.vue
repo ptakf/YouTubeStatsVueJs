@@ -3,7 +3,7 @@ import { Channel } from '@/models/channel'
 import { Statistics } from '@/models/statistics'
 import router from '@/router'
 import { useChannelStore } from '@/stores/channelStore'
-import { computed, onBeforeMount, ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import ChartComponent from '@/components/ChartComponent.vue'
 
 const channelStore = useChannelStore()
