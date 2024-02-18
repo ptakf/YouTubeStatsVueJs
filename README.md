@@ -23,8 +23,8 @@ Project developed by Filip Ptak.
 
 #### How to compile
 ```
-git clone https://github.com/ptakf-uek/YouTube-Stats-Vuejs
-cd YouTube-Stats-Vuejs
+git clone https://github.com/ptakf/YouTubeStatsVueJs
+cd YouTubeStatsVueJs
 mvn package
 ```
 
